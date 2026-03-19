@@ -7,6 +7,7 @@ import {
   integer,
   serial,
   pgEnum,
+  decimal,
 } from "drizzle-orm/pg-core";
 
 // ── Users ────────────────────────────────────────────────────────────────────
@@ -18,8 +19,9 @@ export const users = pgTable("user", {
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
-  credits: integer("credits").notNull().default(0),
+  credits: integer("credits").notNull().default(20),
   cvUrl: text("cvUrl"),
+  role: text("role").default("candidate"), // "candidate" or "employer"
 });
 
 // ── Accounts (OAuth) ─────────────────────────────────────────────────────────
@@ -89,4 +91,24 @@ export const orders = pgTable("order", {
   status: orderStatusEnum("status").notNull().default("created"),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
   updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
+});
+
+// ── Jobs ─────────────────────────────────────────────────────────────────────
+export const jobs = pgTable("job", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  company: text("company").notNull(),
+  location: text("location").notNull(),
+  description: text("description").notNull(),
+  salary: text("salary"),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+});
+
+// ── Applications ─────────────────────────────────────────────────────────────
+export const applications = pgTable("application", {
+  id: serial("id").primaryKey(),
+  jobId: integer("jobId").notNull().references(() => jobs.id, { onDelete: "cascade" }),
+  userId: text("userId").notNull().references(() => users.id, { onDelete: "cascade" }),
+  status: text("status").notNull().default("applied"), // "applied", "interviewing", "rejected", "hired"
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
 });
