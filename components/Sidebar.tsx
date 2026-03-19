@@ -2,13 +2,14 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Briefcase, Coins, UserCircle, LogOut, CheckCircle2 } from "lucide-react";
+import { Briefcase, Coins, UserCircle, LogOut, CheckCircle2, FileText } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 const navItems = [
   { href: "/dashboard/jobs", label: "Jobs", icon: Briefcase },
   { href: "/dashboard/applications", label: "Applications", icon: CheckCircle2 },
   { href: "/dashboard/naukri", label: "Naukri Bot", icon: Briefcase },
+  { href: "/dashboard/resume", label: "ATS Resume", icon: FileText },
   { href: "/dashboard/credits", label: "Credits", icon: Coins },
   { href: "/dashboard/profile", label: "Profile", icon: UserCircle },
 ];

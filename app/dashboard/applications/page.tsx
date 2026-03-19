@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { jobs, applications } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { Building2, MapPin, Search } from "lucide-react";
 
@@ -19,7 +19,7 @@ export default async function ApplicationsPage() {
     .from(applications)
     .innerJoin(jobs, eq(applications.jobId, jobs.id))
     .where(eq(applications.userId, session.user.id))
-    .orderBy(applications.createdAt);
+    .orderBy(desc(applications.createdAt));
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">

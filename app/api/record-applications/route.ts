@@ -2,12 +2,22 @@ import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { jobs, applications } from "@/db/schema";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function POST(req: Request) {
   try {
     const { userId, appliedJobs } = await req.json();
 
     if (!userId || !appliedJobs || !Array.isArray(appliedJobs)) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400, headers: corsHeaders });
     }
 
     for (const job of appliedJobs) {
@@ -35,9 +45,9 @@ export async function POST(req: Request) {
     revalidatePath("/dashboard/applications");
     revalidatePath("/dashboard");
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true }, { headers: corsHeaders });
   } catch (error) {
     console.error("Failed to record applications", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500, headers: corsHeaders });
   }
 }
