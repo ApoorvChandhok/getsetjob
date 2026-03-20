@@ -112,3 +112,39 @@ export const applications = pgTable("application", {
   status: text("status").notNull().default("applied"), // "applied", "interviewing", "rejected", "hired"
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
 });
+
+// ── LinkedIn Bot Schema ───────────────────────────────────────────────────────
+export const linkedinBotProfiles = pgTable("linkedin_bot_profile", {
+  userId: text("userId")
+    .primaryKey()
+    .references(() => users.id, { onDelete: "cascade" }),
+  phone: text("phone"),
+  location: text("location"),
+  headline: text("headline"),
+  summary: text("summary"),
+  coverLetterTemplate: text("coverLetterTemplate"),
+  desiredSalary: integer("desiredSalary"),
+  currentSalary: integer("currentSalary"),
+  noticePeriodDays: integer("noticePeriodDays"),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const linkedinBotSkills = pgTable("linkedin_bot_skill", {
+  id: serial("id").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  skillName: text("skillName").notNull(),
+  yearsExperience: integer("yearsExperience").notNull(),
+});
+
+export const linkedinBotExclusions = pgTable("linkedin_bot_exclusion", {
+  id: serial("id").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  exclusionType: text("exclusionType").notNull(),
+  value: text("value").notNull(),
+});
+

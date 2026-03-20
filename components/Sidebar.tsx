@@ -2,13 +2,14 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Briefcase, Coins, UserCircle, LogOut, CheckCircle2, FileText } from "lucide-react";
+import { Briefcase, Coins, UserCircle, LogOut, CheckCircle2, FileText, Bot } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 const navItems = [
   { href: "/dashboard/jobs", label: "Jobs", icon: Briefcase },
   { href: "/dashboard/applications", label: "Applications", icon: CheckCircle2 },
   { href: "/dashboard/naukri", label: "Naukri Bot", icon: Briefcase },
+  { href: "/dashboard/linkedin-bot", label: "LinkedIn Bot", icon: Bot },
   { href: "/dashboard/resume", label: "ATS Resume", icon: FileText },
   { href: "/dashboard/credits", label: "Credits", icon: Coins },
   { href: "/dashboard/profile", label: "Profile", icon: UserCircle },
@@ -62,10 +63,10 @@ export function Sidebar({ user }: { user: { name?: string | null; email?: string
       </nav>
 
       {/* Sign Out */}
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 pt-2 border-t border-white/10">
         <button
           onClick={() => signOut({ callbackUrl: "/" })}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+          className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-red-400 border border-red-500/30 bg-red-500/5 hover:bg-red-500/20 hover:border-red-500/60 hover:text-red-300 transition-all duration-200 shadow-sm"
         >
           <LogOut className="w-4 h-4" />
           Sign out
